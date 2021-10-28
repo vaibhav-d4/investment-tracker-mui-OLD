@@ -1,16 +1,5 @@
 import * as React from "react";
-import {
-    BrowserRouter as Router,
-    Route,
-    withRouter,
-    useHistory,
-} from "react-router-dom";
-import {
-    styled,
-    useTheme,
-    ThemeProvider,
-    createTheme,
-} from "@mui/material/styles";
+import { styled, ThemeProvider, createTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -26,8 +15,6 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { Paper } from "@mui/material";
@@ -35,6 +22,7 @@ import ShowChartIcon from "@mui/icons-material/ShowChart";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LockClockIcon from "@mui/icons-material/LockClock";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
+import { Switch, Route, withRouter, useHistory } from "react-router-dom";
 import StocksComponent from "./Stocks/StocksComponent";
 
 const drawerWidth = 240;
@@ -104,14 +92,9 @@ const Drawer = styled(MuiDrawer, {
     }),
 }));
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-
-function MainPageContent() {
-    const theme = useTheme();
-    const colorMode = React.useContext(ColorModeContext);
+export const Homepage = (props) => {
     const [open, setOpen] = React.useState(false);
-    const history = useHistory();
-
+    // const history = useHistory();
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -120,111 +103,10 @@ function MainPageContent() {
         setOpen(false);
     };
 
-    const pathClick = (path) => {
-        history.push(path);
-    };
-
-    return (
-        <Paper style={{ height: "100vh", borderRadius: "0" }}>
-            <Box sx={{ display: "flex" }}>
-                <CssBaseline />
-                <AppBar position="fixed" open={open}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={{
-                                marginRight: "36px",
-                                ...(open && { display: "none" }),
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h5" component="div">
-                            Investment Tracker
-                        </Typography>
-                        <Box sx={{ flexGrow: "1" }} />
-                        <IconButton
-                            onClick={colorMode.toggleColorMode}
-                            color="inherit"
-                        >
-                            {theme.palette.mode === "dark" ? (
-                                <Brightness7Icon />
-                            ) : (
-                                <Brightness4Icon />
-                            )}
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-                <Drawer variant="permanent" open={open}>
-                    <DrawerHeader>
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === "rtl" ? (
-                                <ChevronRightIcon />
-                            ) : (
-                                <ChevronLeftIcon />
-                            )}
-                        </IconButton>
-                    </DrawerHeader>
-                    <Divider />
-                    <List>
-                        <ListItem button onClick={() => pathClick("/stocks")}>
-                            <ListItemIcon>
-                                <ShowChartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Stocks"} />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <BarChartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Mutual Funds"} />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <LockClockIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Fixed Deposits"} />
-                        </ListItem>
-                        <ListItem button>
-                            <ListItemIcon>
-                                <ViewModuleIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Gold"} />
-                        </ListItem>
-                    </List>
-                    {/* <Divider /> */}
-                </Drawer>
-                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                    {/* <DrawerHeader sx={{ maxHeight: "20px" }} /> */}
-                    <Typography paragraph>IN HOMEPAGE</Typography>
-                </Box>
-            </Box>
-            <Router>
-                <Route
-                    path="/stocks"
-                    exact
-                    render={(props) => <StocksComponent />}
-                />
-            </Router>
-        </Paper>
-    );
-}
-
-export default function Homepage() {
     const [mode, setMode] = React.useState("dark");
-    const colorMode = React.useMemo(
-        () => ({
-            toggleColorMode: () => {
-                setMode((prevMode) =>
-                    prevMode === "light" ? "dark" : "light"
-                );
-            },
-        }),
-        []
-    );
+    const toggleColorMode = () => {
+        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    };
 
     const theme = React.useMemo(
         () =>
@@ -237,10 +119,94 @@ export default function Homepage() {
     );
 
     return (
-        <ColorModeContext.Provider value={colorMode}>
-            <ThemeProvider theme={theme}>
-                <MainPageContent />
-            </ThemeProvider>
-        </ColorModeContext.Provider>
+        <ThemeProvider theme={theme}>
+            <Paper style={{ height: "100vh", borderRadius: "0" }}>
+                <Box sx={{ display: "flex" }}>
+                    <CssBaseline />
+                    <AppBar position="fixed" open={open}>
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                sx={{
+                                    marginRight: "36px",
+                                    ...(open && { display: "none" }),
+                                }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h5" component="div">
+                                Investment Tracker
+                            </Typography>
+                            <Box sx={{ flexGrow: "1" }} />
+                            <IconButton
+                                onClick={toggleColorMode}
+                                color="inherit"
+                            >
+                                {theme.palette.mode === "dark" ? (
+                                    <Brightness7Icon />
+                                ) : (
+                                    <Brightness4Icon />
+                                )}
+                            </IconButton>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer variant="permanent" open={open}>
+                        <DrawerHeader>
+                            <IconButton onClick={handleDrawerClose}>
+                                {theme.direction === "rtl" ? (
+                                    <ChevronRightIcon />
+                                ) : (
+                                    <ChevronLeftIcon />
+                                )}
+                            </IconButton>
+                        </DrawerHeader>
+                        <Divider />
+                        <List>
+                            <ListItem
+                                button
+                                onClick={() => props.history.push("/stocks")}
+                            >
+                                <ListItemIcon>
+                                    <ShowChartIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Stocks"} />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <BarChartIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Mutual Funds"} />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <LockClockIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Fixed Deposits"} />
+                            </ListItem>
+                            <ListItem button>
+                                <ListItemIcon>
+                                    <ViewModuleIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={"Gold"} />
+                            </ListItem>
+                        </List>
+                        {/* <Divider /> */}
+                    </Drawer>
+                    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                        <DrawerHeader />
+                        <Typography>IN HOMEPAGE</Typography>
+                    </Box>
+                </Box>
+            </Paper>
+            <Switch>
+                <Route path="/stocks">
+                    <StocksComponent />
+                </Route>
+            </Switch>
+        </ThemeProvider>
     );
-}
+};
+export default withRouter(Homepage);
