@@ -34,13 +34,15 @@ import {
     useHistory,
     Link,
 } from "react-router-dom";
-import StocksComponent from "./../Stocks/StocksComponent";
+import StocksComponent from "../Stocks/StocksComponent";
 
 // COMPONENTS
-import MFComponent from "./../Mutual Funds/MFComponent";
-import FDComponent from "./../Fixed Deposits/FDComponent";
-import GoldComponent from "./../Gold/GoldComponent";
+import MFComponent from "../Mutual Funds/MFComponent";
+import FDComponent from "../Fixed Deposits/FDComponent";
+import GoldComponent from "../Gold/GoldComponent";
 import HomeComponent from "../Home/HomePage";
+
+import { createBrowserHistory } from "history";
 
 const drawerWidth = 240;
 
@@ -109,11 +111,9 @@ const Drawer = styled(MuiDrawer, {
     }),
 }));
 
-export const Layout = (props) => {
+const Layout = (props) => {
     const classes = props.useStyles();
     const [open, setOpen] = React.useState(false);
-    const history = useHistory();
-    // console.log(history);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -121,6 +121,34 @@ export const Layout = (props) => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    const itemsList = [
+        {
+            text: "Home",
+            icon: <HomeIcon />,
+            linkText: "/home",
+        },
+        {
+            text: "Stocks",
+            icon: <ShowChartIcon />,
+            linkText: "/stocks",
+        },
+        {
+            text: "Mutual Funds",
+            icon: <BarChartIcon />,
+            linkText: "/mutualfunds",
+        },
+        {
+            text: "Fixed Deposits",
+            icon: <LockClockIcon />,
+            linkText: "/fd",
+        },
+        {
+            text: "Gold",
+            icon: <ViewModuleIcon />,
+            linkText: "/gold",
+        },
+    ];
 
     return (
         <>
@@ -171,46 +199,24 @@ export const Layout = (props) => {
                         </DrawerHeader>
                         <Divider />
                         <List>
-                            <Link to="/" className={classes.link}>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <HomeIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={"Home"} />
-                                </ListItem>
-                            </Link>
-                            <Link to="/stocks" className={classes.link}>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <ShowChartIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={"Stocks"} />
-                                </ListItem>
-                            </Link>
-                            <Link to="/mutualfunds" className={classes.link}>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <BarChartIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={"Mutual Funds"} />
-                                </ListItem>
-                            </Link>
-                            <Link to="/fd" className={classes.link}>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <LockClockIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={"Fixed Deposits"} />
-                                </ListItem>
-                            </Link>
-                            <Link to="/gold" className={classes.link}>
-                                <ListItem button>
-                                    <ListItemIcon>
-                                        <ViewModuleIcon />
-                                    </ListItemIcon>
-                                    <ListItemText primary={"Gold"} />
-                                </ListItem>
-                            </Link>
+                            {itemsList.map((item, index) => {
+                                const { text, icon, linkText } = item;
+                                return (
+                                    <Link
+                                        to={linkText}
+                                        className={classes.link}
+                                    >
+                                        <ListItem button key={text}>
+                                            {icon && (
+                                                <ListItemIcon>
+                                                    {icon}
+                                                </ListItemIcon>
+                                            )}
+                                            <ListItemText primary={text} />
+                                        </ListItem>
+                                    </Link>
+                                );
+                            })}
                         </List>
                         {/* <Divider /> */}
                     </Drawer>

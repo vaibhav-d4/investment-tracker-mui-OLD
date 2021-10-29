@@ -18,6 +18,10 @@ import { useState } from "react";
 
 // COMPONENTS
 import Layout from "./Components/Layout/Layout";
+import MFComponent from "./Components/Mutual Funds/MFComponent";
+import FDComponent from "./Components/Fixed Deposits/FDComponent";
+import GoldComponent from "./Components/Gold/GoldComponent";
+import HomeComponent from "./Components/Home/HomePage";
 
 function App() {
     const history = useHistory();
@@ -39,15 +43,17 @@ function App() {
     }));
 
     return (
-        <ThemeProvider theme={theme}>
-            <Paper style={{ height: "100vh", borderRadius: "0" }}>
-                <Layout
-                    toggleColorMode={toggleColorMode}
-                    theme={theme}
-                    useStyles={useStyles}
-                />
-            </Paper>
-        </ThemeProvider>
+        <Router>
+            <ThemeProvider theme={theme}>
+                <Paper style={{ height: "100vh", borderRadius: "0" }}>
+                    <Layout
+                        toggleColorMode={toggleColorMode}
+                        theme={theme}
+                        useStyles={useStyles}
+                    />
+                </Paper>
+            </ThemeProvider>
+        </Router>
     );
 }
 export default App;
