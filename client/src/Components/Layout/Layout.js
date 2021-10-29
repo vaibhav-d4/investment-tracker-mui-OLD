@@ -23,6 +23,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import LockClockIcon from "@mui/icons-material/LockClock";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import HomeIcon from "@mui/icons-material/Home";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { makeStyles } from "@mui/material";
 import { withRouter } from "react-router-dom";
 // import App from "./../../App";
@@ -41,6 +42,7 @@ import MFComponent from "../Mutual Funds/MFComponent";
 import FDComponent from "../Fixed Deposits/FDComponent";
 import GoldComponent from "../Gold/GoldComponent";
 import HomeComponent from "../Home/HomePage";
+import BankComponent from "../Banks and Accounts/BankComponent";
 
 import { createBrowserHistory } from "history";
 
@@ -129,6 +131,11 @@ const Layout = (props) => {
             linkText: "/home",
         },
         {
+            text: "Banks and Accounts",
+            icon: <AccountBalanceIcon />,
+            linkText: "/banks",
+        },
+        {
             text: "Stocks",
             icon: <ShowChartIcon />,
             linkText: "/stocks",
@@ -201,20 +208,23 @@ const Layout = (props) => {
                         <List>
                             {itemsList.map((item, index) => {
                                 const { text, icon, linkText } = item;
+
                                 return (
-                                    <Link
-                                        to={linkText}
-                                        className={classes.link}
-                                    >
-                                        <ListItem button key={text}>
-                                            {icon && (
-                                                <ListItemIcon>
-                                                    {icon}
-                                                </ListItemIcon>
-                                            )}
-                                            <ListItemText primary={text} />
-                                        </ListItem>
-                                    </Link>
+                                    <>
+                                        <Link
+                                            to={linkText}
+                                            className={classes.link}
+                                        >
+                                            <ListItem button>
+                                                {icon && (
+                                                    <ListItemIcon>
+                                                        {icon}
+                                                    </ListItemIcon>
+                                                )}
+                                                <ListItemText primary={text} />
+                                            </ListItem>
+                                        </Link>
+                                    </>
                                 );
                             })}
                         </List>
@@ -232,6 +242,11 @@ const Layout = (props) => {
                                 exact
                                 path="/home"
                                 component={HomeComponent}
+                            />
+                            <Route
+                                exact
+                                path="/banks"
+                                component={BankComponent}
                             />
                             <Route
                                 exact

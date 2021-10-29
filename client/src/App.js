@@ -24,8 +24,6 @@ import GoldComponent from "./Components/Gold/GoldComponent";
 import HomeComponent from "./Components/Home/HomePage";
 
 function App() {
-    const history = useHistory();
-    console.log(history);
     const [themeMode, setMode] = useState("dark");
     const toggleColorMode = () => {
         setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
