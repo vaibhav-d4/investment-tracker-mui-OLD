@@ -23,11 +23,24 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import LockClockIcon from "@mui/icons-material/LockClock";
 import ViewModuleIcon from "@mui/icons-material/ViewModule";
 import HomeIcon from "@mui/icons-material/Home";
+import { makeStyles } from "@mui/material";
 import { withRouter } from "react-router-dom";
 // import App from "./../../App";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+    useHistory,
+    Link,
+} from "react-router-dom";
 import StocksComponent from "./../Stocks/StocksComponent";
-import { useHistory } from "react-router-dom";
+
+// COMPONENTS
+import MFComponent from "./../Mutual Funds/MFComponent";
+import FDComponent from "./../Fixed Deposits/FDComponent";
+import GoldComponent from "./../Gold/GoldComponent";
+import HomeComponent from "../Home/HomePage";
 
 const drawerWidth = 240;
 
@@ -97,8 +110,10 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export const Layout = (props) => {
+    const classes = props.useStyles();
     const [open, setOpen] = React.useState(false);
     const history = useHistory();
+    // console.log(history);
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -109,114 +124,131 @@ export const Layout = (props) => {
 
     return (
         <>
-            <Box sx={{ display: "flex" }}>
-                <CssBaseline />
-                <AppBar position="fixed" open={open}>
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={{
-                                marginRight: "36px",
-                                ...(open && { display: "none" }),
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h5" component="div">
-                            Investment Tracker
-                        </Typography>
-                        <Box sx={{ flexGrow: "1" }} />
-                        <IconButton
-                            onClick={props.toggleColorMode}
-                            color="inherit"
-                        >
-                            {props.theme.palette.mode === "dark" ? (
-                                <Brightness7Icon />
-                            ) : (
-                                <Brightness4Icon />
-                            )}
-                        </IconButton>
-                    </Toolbar>
-                </AppBar>
-                <Drawer variant="permanent" open={open}>
-                    <DrawerHeader>
-                        <IconButton onClick={handleDrawerClose}>
-                            {props.theme.direction === "rtl" ? (
-                                <ChevronRightIcon />
-                            ) : (
-                                <ChevronLeftIcon />
-                            )}
-                        </IconButton>
-                    </DrawerHeader>
-                    <Divider />
-                    <List>
-                        <ListItem
-                            button
-                            onClick={() => props.history.push("/")}
-                        >
-                            <ListItemIcon>
-                                <HomeIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Home"} />
-                        </ListItem>
-                        <ListItem
-                            button
-                            onClick={() => props.history.push("/stocks")}
-                        >
-                            <ListItemIcon>
-                                <ShowChartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Stocks"} />
-                        </ListItem>
-                        <ListItem
-                            button
-                            onClick={() => props.history.push("/mutualfunds")}
-                        >
-                            <ListItemIcon>
-                                <BarChartIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Mutual Funds"} />
-                        </ListItem>
-                        <ListItem
-                            button
-                            onClick={() => props.history.push("/fd")}
-                        >
-                            <ListItemIcon>
-                                <LockClockIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Fixed Deposits"} />
-                        </ListItem>
-                        <ListItem
-                            button
-                            onClick={() => props.history.push("/gold")}
-                        >
-                            <ListItemIcon>
-                                <ViewModuleIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={"Gold"} />
-                        </ListItem>
-                    </List>
-                    {/* <Divider /> */}
-                </Drawer>
-                <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                    <DrawerHeader />
-                    {/* <Typography>IN HOMEPAGE</Typography> */}
-                    {/* <Router>
+            <Router>
+                <Box sx={{ display: "flex" }}>
+                    <CssBaseline />
+                    <AppBar position="fixed" open={open}>
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                sx={{
+                                    marginRight: "36px",
+                                    ...(open && { display: "none" }),
+                                }}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Link to="/" className={classes.link}>
+                                <Typography variant="h5" component="div">
+                                    Investment Tracker
+                                </Typography>
+                            </Link>
+                            <Box sx={{ flexGrow: "1" }} />
+                            <IconButton
+                                onClick={props.toggleColorMode}
+                                color="inherit"
+                            >
+                                {props.theme.palette.mode === "dark" ? (
+                                    <Brightness7Icon />
+                                ) : (
+                                    <Brightness4Icon />
+                                )}
+                            </IconButton>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer variant="permanent" open={open}>
+                        <DrawerHeader>
+                            <IconButton onClick={handleDrawerClose}>
+                                {props.theme.direction === "rtl" ? (
+                                    <ChevronRightIcon />
+                                ) : (
+                                    <ChevronLeftIcon />
+                                )}
+                            </IconButton>
+                        </DrawerHeader>
+                        <Divider />
+                        <List>
+                            <Link to="/" className={classes.link}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <HomeIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Home"} />
+                                </ListItem>
+                            </Link>
+                            <Link to="/stocks" className={classes.link}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <ShowChartIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Stocks"} />
+                                </ListItem>
+                            </Link>
+                            <Link to="/mutualfunds" className={classes.link}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <BarChartIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Mutual Funds"} />
+                                </ListItem>
+                            </Link>
+                            <Link to="/fd" className={classes.link}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <LockClockIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Fixed Deposits"} />
+                                </ListItem>
+                            </Link>
+                            <Link to="/gold" className={classes.link}>
+                                <ListItem button>
+                                    <ListItemIcon>
+                                        <ViewModuleIcon />
+                                    </ListItemIcon>
+                                    <ListItemText primary={"Gold"} />
+                                </ListItem>
+                            </Link>
+                        </List>
+                        {/* <Divider /> */}
+                    </Drawer>
+                    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                        <DrawerHeader />
                         <Switch>
+                            <Route
+                                exact
+                                path="/"
+                                render={() => <Redirect to="/home" />}
+                            />
+                            <Route
+                                exact
+                                path="/home"
+                                component={HomeComponent}
+                            />
                             <Route
                                 exact
                                 path="/stocks"
                                 component={StocksComponent}
                             />
+                            <Route
+                                exact
+                                path="/mutualfunds"
+                                component={MFComponent}
+                            />
+                            <Route exact path="/fd" component={FDComponent} />
+                            <Route
+                                exact
+                                path="/gold"
+                                component={GoldComponent}
+                            />
                         </Switch>
-                    </Router> */}
+                    </Box>
                 </Box>
-            </Box>
+            </Router>
         </>
     );
 };
-export default withRouter(Layout);
-// export default Layout;
+// export default withRouter(Layout);
+export default Layout;

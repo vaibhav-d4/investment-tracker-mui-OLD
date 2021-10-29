@@ -2,6 +2,7 @@
 import { CssBaseline, Drawer, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
+import { withRouter } from "react-router-dom";
 
 function StocksComponent() {
     return (
@@ -11,4 +12,4 @@ function StocksComponent() {
     );
 }
 
-export default StocksComponent;
+export default withRouter(StocksComponent);
